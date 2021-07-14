@@ -36,7 +36,7 @@ public class CategoriaResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-		public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
 		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -44,8 +44,8 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
 		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
@@ -61,8 +61,8 @@ public class CategoriaResource {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> list = service.findAll();
-		List<CategoriaDTO> listDTO = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDTO);
+		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@RequestMapping(value="/page", method=RequestMethod.GET)
@@ -72,7 +72,7 @@ public class CategoriaResource {
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy, direction);
-		Page<CategoriaDTO> listDTO = list.map(obj -> new CategoriaDTO(obj));
-		return ResponseEntity.ok().body(listDTO);
+		Page<CategoriaDTO> listDto = list.map(obj -> new CategoriaDTO(obj));  
+		return ResponseEntity.ok().body(listDto);
 	}
 }
